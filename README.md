@@ -24,11 +24,11 @@
 
 
 
-[image1]: ./test_images_output/Output_binary_image.jpg
-[image2]: ./test_images_output/Undistorted_Warped_image.jpg
-[image3]: ./test_images_output/Sliding_Window_image.jpg
-[image4]: ./test_images_output/Fit__poly_image.jpg
-[image5]: ./test_images_output/Lane_image.jpg
+[image1]: ./output_images/Output_binary_image.jpg
+[image2]: ./output_images/Undistorted_Warped_image.jpg
+[image3]: ./output_images/Sliding_Window_image.jpg
+[image4]: ./output_images/Fit__poly_image.jpg
+[image5]: ./output_images/Lane_image.jpg
 [image6]: ./test_images/test2.jpg
 
 [image7]: ./camera_cal_output/calibration9.jpg

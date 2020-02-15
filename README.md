@@ -1,39 +1,103 @@
-## Advanced Lane Finding
-[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
-![Lanes Image](./examples/example_output.jpg)
 
-In this project, your goal is to write a software pipeline to identify the lane boundaries in a video, but the main output or product we want you to create is a detailed writeup of the project.  Check out the [writeup template](https://github.com/udacity/CarND-Advanced-Lane-Lines/blob/master/writeup_template.md) for this project and use it as a starting point for creating your own writeup.  
+### Advanced Lane Finding
 
-Creating a great writeup:
+#### Goals
+
+1.	Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
+2.	Apply a distortion correction to raw images.
+3.	Use color transforms, gradients, etc., to create a thresholded binary image.
+4.	Apply a perspective transform to rectify binary image ("birds-eye view").
+5.	Detect lane pixels and fit to find the lane boundary.
+6.	Determine the curvature of the lane and vehicle position with respect to center.
+7.	Warp the detected lane boundaries back onto the original image.
+8.	Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
+
+
+[//]: # (Image References)
+
+[image11]: ./examples/undistort_output.png "Undistorted"
+[image12]: ./test_images/test1.jpg "Road Transformed"
+[image13]: ./examples/binary_combo_example.jpg "Binary Example"
+[image14]: ./examples/warped_straight_lines.jpg "Warp Example"
+[image15]: ./examples/color_fit_lines.jpg "Fit Visual"
+[image16]: ./examples/example_output.jpg "Output"
+
+
+
+[image1]: ./test_images_output/Output_binary_image.jpg
+[image2]: ./test_images_output/Undistorted_Warped_image.jpg
+[image3]: ./test_images_output/Sliding_Window_image.jpg
+[image4]: ./test_images_output/Fit__poly_image.jpg
+[image5]: ./test_images_output/Lane_image.jpg
+[image6]: ./test_images/test2.jpg
+
+[image7]: ./camera_cal_output/calibration9.jpg
+[video1]: ./project_video.mp4 "Video"
+
+
+
+
+#### 1.Camera Calibration
+
+
+
+The code for this step is contained in the second and third code cell of the IPython notebook located in "./P2.ipynb" 
+
+Preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world.Assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time I got successfully detect all chessboard corners in a test image.  `imgpoints` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
+
+I then used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  Then applied this distortion correction to the test image using the `cv2.undistort()` function and obtained this result: 
+
+![alt text][image7]
+
+#### 2.Apply a distortion correction to raw images.
+The images below show the original and undistorted image
+![alt text][image6]![alt text][image2]
+
+#### 3. Use color transforms, gradients, etc., to create a thresholded binary image.
+
+Used a combination of color and gradient thresholds to generate a binary image. Here's an example of my output for this step.
+
+![alt text][image1]
+
+#### 4.	Apply a perspective transform to rectify binary image ("birds-eye view").  
+
+The code for my perspective transform includes a function called 'corners_unwarped', in the sixth code cells from the top. The corners_unwarped() function takes as inputs an image (img), as well as source (src) and destination (dst) points. I chose to hardcode the source and destination points in the following manner
+
+src = np.float32([[600, 450], [720, 450], [1180, 720], [280, 720]])
+dst = np.float32([[200, 0], [1000, 0], [1180, 720], [200, 720]])
+
+I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
+
+![alt text][image2]
+
+#### 5.	Detect lane pixels and fit to find the lane boundary.
+
+Took a histogram of the bottom half of the image,Create an output image to draw on and visualize the result. Found the peak of the left and right halves of the histogram. These will be the starting point for the left and right lines. After visually analysing the I choose the number of sliding windows,Set the width of the windows and Set minimum number of pixels found to recenter window. Extracted left and right line pixel positions. With the help of 'fit_polynomial' function 
+
+![alt text][image4]
+
+#### 5. Calculating the radius of curvature of the lane and the position of the vehicle with respect to center.
+
+I took mean of left and right radii. Considering the image centre as centre of the car and converted this pixel value to metres.Calculated the difference between the lane centre and centre of car. For a negative value took it as left from centre and for positive as right of centre. 
+
+#### 6. Result plotted back down onto the road such that the lane area is identified clearly.
+
+I implemented this step in 'pipeline' function.  Here is an example of my result on a test image:
+
+![alt text][image5]
+
 ---
-A great writeup should include the rubric points as well as your description of how you addressed each point.  You should include a detailed description of the code used in each step (with line-number references and code snippets where necessary), and links to other supporting documents or external references.  You should include images in your writeup to demonstrate how your code works with examples.  
 
-All that said, please be concise!  We're not looking for you to write a book here, just a brief description of how you passed each rubric point, and references to the relevant code :). 
+### Pipeline (video)
 
-You're not required to use markdown for your writeup.  If you use another method please just submit a pdf of your writeup.
+#### 1. Following is the link to the output video showing the lane identification
 
-The Project
+ [link to my video result][video1]
+
 ---
 
-The goals / steps of this project are the following:
+### Discussion
 
-* Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
-* Apply a distortion correction to raw images.
-* Use color transforms, gradients, etc., to create a thresholded binary image.
-* Apply a perspective transform to rectify binary image ("birds-eye view").
-* Detect lane pixels and fit to find the lane boundary.
-* Determine the curvature of the lane and vehicle position with respect to center.
-* Warp the detected lane boundaries back onto the original image.
-* Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
+#### Issues faced and further suggestions for improvement
 
-The images for camera calibration are stored in the folder called `camera_cal`.  The images in `test_images` are for testing your pipeline on single frames.  If you want to extract more test images from the videos, you can simply use an image writing method like `cv2.imwrite()`, i.e., you can read the video in frame by frame as usual, and for frames you want to save for later you can write to an image file.  
-
-To help the reviewer examine your work, please save examples of the output from each stage of your pipeline in the folder called `output_images`, and include a description in your writeup for the project of what each image shows.    The video called `project_video.mp4` is the video your pipeline should work well on.  
-
-The `challenge_video.mp4` video is an extra (and optional) challenge for you if you want to test your pipeline under somewhat trickier conditions.  The `harder_challenge.mp4` video is another optional challenge and is brutal!
-
-If you're feeling ambitious (again, totally optional though), don't stop there!  We encourage you to go out and take video of your own, calibrate your camera and show us how you would implement this project from scratch!
-
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
-
+This pipeline does not work on too curvy roads and also with dark shadows on the road. As per my understanding these depend on the color spaces, sobel and threshold combinations. 

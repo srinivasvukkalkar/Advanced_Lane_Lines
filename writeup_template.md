@@ -1,4 +1,3 @@
-
 ### Advanced Lane Finding
 
 #### Goals
@@ -37,9 +36,7 @@
 
 
 
-#### 1.Camera Calibration
-
-
+#### 1. Camera Calibration
 
 The code for this step is contained in the second and third code cell of the IPython notebook located in "./P2.ipynb" 
 
@@ -49,19 +46,11 @@ I then used the output `objpoints` and `imgpoints` to compute the camera calibra
 
 ![alt text][image7]
 
-#### 2.Apply a distortion correction to raw images.
-The images below show the original and undistorted image
-![alt text][image6]![alt text][image2]
+---
 
-#### 3. Use color transforms, gradients, etc., to create a thresholded binary image.
+#### 2. Apply a distortion correction to raw images. Use color transforms, gradients, etc., to create a thresholded binary image. Apply a perspective transform to rectify binary image ("birds-eye view").
 
-Used a combination of color and gradient thresholds to generate a binary image. Here's an example of my output for this step.
-
-![alt text][image1]
-
-#### 4.	Apply a perspective transform to rectify binary image ("birds-eye view").  
-
-The code for my perspective transform includes a function called 'corners_unwarped', in the sixth code cells from the top. The corners_unwarped() function takes as inputs an image (img), as well as source (src) and destination (dst) points. I chose to hardcode the source and destination points in the following manner
+The images below show the original and undistorted image. Used a combination of color and gradient thresholds to generate a binary image. The code for my perspective transform includes a function called 'corners_unwarped', in the sixth code cells from the top. The corners_unwarped() function takes as inputs an image (img), as well as source (src) and destination (dst) points. I chose to hardcode the source and destination points in the following manner
 
 src = np.float32([[600, 450], [720, 450], [1180, 720], [280, 720]])
 dst = np.float32([[200, 0], [1000, 0], [1180, 720], [200, 720]])
@@ -70,17 +59,23 @@ I verified that my perspective transform was working as expected by drawing the 
 
 ![alt text][image2]
 
-#### 5.	Detect lane pixels and fit to find the lane boundary.
+---
+
+#### 3.	Detect lane pixels and fit to find the lane boundary.
 
 Took a histogram of the bottom half of the image,Create an output image to draw on and visualize the result. Found the peak of the left and right halves of the histogram. These will be the starting point for the left and right lines. After visually analysing the I choose the number of sliding windows,Set the width of the windows and Set minimum number of pixels found to recenter window. Extracted left and right line pixel positions. With the help of 'fit_polynomial' function 
 
 ![alt text][image4]
 
-#### 5. Calculating the radius of curvature of the lane and the position of the vehicle with respect to center.
+---
+
+#### 4. Calculating the radius of curvature of the lane and the position of the vehicle with respect to center.
 
 I took mean of left and right radii. Considering the image centre as centre of the car and converted this pixel value to metres.Calculated the difference between the lane centre and centre of car. For a negative value took it as left from centre and for positive as right of centre. 
 
-#### 6. Result plotted back down onto the road such that the lane area is identified clearly.
+---
+
+#### 5. Result plotted back down onto the road such that the lane area is identified clearly.
 
 I implemented this step in 'pipeline' function.  Here is an example of my result on a test image:
 
